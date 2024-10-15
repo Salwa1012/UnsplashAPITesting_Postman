@@ -1,0 +1,1963 @@
+{
+	"info": {
+		"_postman_id": "25fb755b-5e9d-4d41-8352-ac20aad00224",
+		"name": "Unsplash API Testing",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "37720715"
+	},
+	"item": [
+		{
+			"name": "Current User",
+			"item": [
+				{
+					"name": "Get My profile",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response has user ID\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.id).to.exist;\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Username is salwa1012\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.username).to.eql(\"salwa1012\");\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{Accesstoken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BaseURL}}/me",
+							"host": [
+								"{{BaseURL}}"
+							],
+							"path": [
+								"me"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get profile unauthorized",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 401\", function () {\r",
+									"    pm.response.to.have.status(401);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BaseURL}}/me",
+							"host": [
+								"{{BaseURL}}"
+							],
+							"path": [
+								"me"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update My profile",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"pm.test(\"Body is Updated\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.updated_at).to.exist;\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Name is Updated\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.name).to.eql(\"Salwa Abdallah Esmail\");\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "OAlzuMpP-mVvjvRzY72Zg2oXt-3bn4TdQmi5QyVyarQ",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"first_name\": \"Salwa\",\r\n    \"last_name\": \"Abdallah Esmail\",\r\n    \"bio\": \"Software Tester and Automation Enthusiast\",\r\n    \"location\": \"Cairo, Egypt\",\r\n    \"website\": \"https://salwa1012.com\",\r\n    \"instagram_username\": \"salwa1012\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BaseURL}}/me",
+							"host": [
+								"{{BaseURL}}"
+							],
+							"path": [
+								"me"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Users",
+			"item": [
+				{
+					"name": "Get Single User",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"pm.test(\"Response has user ID and User Name\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.have.property('id');\r",
+									"    pm.expect(jsonData).to.have.property('username');\r",
+									"    pm.expect(jsonData).to.have.property('name');\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Content-Type is application/json\", function () {\r",
+									"    pm.expect(pm.response.headers.get('Content-Type')).to.include('application/json');\r",
+									"});\r",
+									"\r",
+									"pm.test(\"User Name is correct\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.username).to.eql(\"salwa1012\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{Accesstoken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BaseURL}}/users/salwa1012",
+							"host": [
+								"{{BaseURL}}"
+							],
+							"path": [
+								"users",
+								"salwa1012"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get user's portfolio",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"pm.test(\"Reponse has portfolio link\", function () {\r",
+									"    pm.expect(pm.response.text()).to.include(\"url\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "2VC5-ld2aOZBzVqS6Tz_Eo6JcM0xFyf6uGSpTJGFMJI",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BaseURL}}/users/salwa1012/portfolio",
+							"host": [
+								"{{BaseURL}}"
+							],
+							"path": [
+								"users",
+								"salwa1012",
+								"portfolio"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "List user's photo",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"pm.test(\"Response has user color, description , hash\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData[0]).to.have.property('color'); \r",
+									"    pm.expect(jsonData[0]).to.have.property('blur_hash');  \r",
+									"    pm.expect(jsonData[0]).to.have.property('description');    \r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"Content-Type is application/json\", function () {\r",
+									"    pm.expect(pm.response.headers.get('Content-Type')).to.include('application/json');\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{Accesstoken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BaseURL}}/users/salwa1012/photos",
+							"host": [
+								"{{BaseURL}}"
+							],
+							"path": [
+								"users",
+								"salwa1012",
+								"photos"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "List user's liked photos",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{Accesstoken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BaseURL}}/users/salwa1012/likes",
+							"host": [
+								"{{BaseURL}}"
+							],
+							"path": [
+								"users",
+								"salwa1012",
+								"likes"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get User's Collections",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"pm.test(\"Response has user ID, total photos, and title\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData[0]).to.have.property('id'); \r",
+									"    pm.expect(jsonData[0]).to.have.property('total_photos');  \r",
+									"    pm.expect(jsonData[0]).to.have.property('title');    \r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"Content-Type is application/json\", function () {\r",
+									"    pm.expect(pm.response.headers.get('Content-Type')).to.include('application/json');\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{Accesstoken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BaseURL}}/users/normals/collections",
+							"host": [
+								"{{BaseURL}}"
+							],
+							"path": [
+								"users",
+								"normals",
+								"collections"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "List User's statistics",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"pm.test(\"Username is correct\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.have.property('username', 'salwa1012');\r",
+									"});\r",
+									"pm.test(\"Downloads object is present and structured correctly\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.have.property('downloads');\r",
+									"    pm.expect(jsonData.downloads).to.have.property('total');\r",
+									"    pm.expect(jsonData.downloads).to.have.property('historical');\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"Content-Type is application/json\", function () {\r",
+									"    pm.expect(pm.response.headers.get('Content-Type')).to.include('application/json');\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{Accesstoken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BaseURL}}/users/salwa1012/statistics",
+							"host": [
+								"{{BaseURL}}"
+							],
+							"path": [
+								"users",
+								"salwa1012",
+								"statistics"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Photos",
+			"item": [
+				{
+					"name": "List photos",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Created at is present\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    jsonData.forEach(function(item) {\r",
+									"        pm.expect(item).to.have.property('created_at');\r",
+									"    });\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{Accesstoken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BaseURL}}/photos",
+							"host": [
+								"{{BaseURL}}"
+							],
+							"path": [
+								"photos"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Single Photo",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"pm.test(\"Verify photo details\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.id).to.eql(\"bzgles6As0o\");\r",
+									"    pm.expect(jsonData).to.have.property(\"created_at\");\r",
+									"    pm.expect(jsonData.urls).to.have.property(\"raw\");\r",
+									"    pm.expect(jsonData.width).to.eql(4000);\r",
+									"    pm.expect(jsonData.description).to.eql(\"salwa's updated description\");\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{Accesstoken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BaseURL}}/photos/bzgles6As0o",
+							"host": [
+								"{{BaseURL}}"
+							],
+							"path": [
+								"photos",
+								"bzgles6As0o"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Random Photo",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"pm.test(\"Verify photo details\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.have.property(\"created_at\");\r",
+									"    pm.expect(jsonData.urls).to.have.property(\"raw\");\r",
+									" \r",
+									"});\r",
+									"pm.test(\"Response has  ID and Slug\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.have.property('id');\r",
+									"    pm.expect(jsonData).to.have.property('slug');\r",
+									"\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{Accesstoken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BaseURL}}/photos/random",
+							"host": [
+								"{{BaseURL}}"
+							],
+							"path": [
+								"photos",
+								"random"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get photo's statistics",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"pm.test(\"Verify photo download details\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    const historicalValues = jsonData.downloads.historical.values;\r",
+									"    pm.expect(historicalValues).to.be.an('array').that.is.not.empty;\r",
+									"    pm.expect(historicalValues[0].value).to.be.a('number');\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{Accesstoken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BaseURL}}/photos/D5JbEL9L0Zo/statistics",
+							"host": [
+								"{{BaseURL}}"
+							],
+							"path": [
+								"photos",
+								"D5JbEL9L0Zo",
+								"statistics"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Track photo's download",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"pm.test(\"Verify image URL\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    \r",
+									"    pm.expect(jsonData.url).to.eql(\"https://images.unsplash.com/photo-1719937206589-d13b6b008196?ixlib=rb-4.0.3&q=85&fm=jpg&crop=entropy&cs=srgb\");\r",
+									"    });"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{Accesstoken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BaseURL}}/photos/D5JbEL9L0Zo/download",
+							"host": [
+								"{{BaseURL}}"
+							],
+							"path": [
+								"photos",
+								"D5JbEL9L0Zo",
+								"download"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "UpdatePhoto",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"\r",
+									"pm.test(\"Status code is 201\", function () {\r",
+									"    pm.response.to.have.status(201);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Verify id and description\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.id).to.eql(\"bzgles6As0o\");\r",
+									"    pm.expect(jsonData.description).to.eql(\"salwa's updated description\");\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "FaKkIyVSIA4K2rT90kCNHdjzAhozsQtuQ4Pnje0xsVg",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \r\n    \"id\": \"bzgles6As0o\",\r\n    \"description\": \"salwa's updated description\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BaseURL}}/photos/bzgles6As0o",
+							"host": [
+								"{{BaseURL}}"
+							],
+							"path": [
+								"photos",
+								"bzgles6As0o"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Like a photo",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 201\", function () {\r",
+									"    pm.response.to.have.status(201);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Verify photo details\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.have.property(\"photo\");\r",
+									"    pm.expect(jsonData.photo.id).to.eql(\"bzgles6As0o\");\r",
+									"    pm.expect(jsonData.photo.slug).to.eql(\"bzgles6As0o\");\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "uQArIOsM5fwSIvTcjS2Afdr5UfiugwPF8WpzS0u2wfY",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BaseURL}}/photos/bzgles6As0o/like",
+							"host": [
+								"{{BaseURL}}"
+							],
+							"path": [
+								"photos",
+								"bzgles6As0o",
+								"like"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "RemoveLike",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 201\", function () {\r",
+									"    pm.response.to.have.status(201);\r",
+									"});\r",
+									"pm.test(\"Check ID, slug, and alternative slugs\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.have.property(\"photo\");\r",
+									"    pm.expect(jsonData.photo.id).to.eql(\"bzgles6As0o\");\r",
+									"    pm.expect(jsonData.photo.slug).to.eql(\"bzgles6As0o\");\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "FEVKWcgu9NM8aTYNn5bS2VB_OuFYz2FmeWk3QGQYnqA",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{BaseURL}}/photos/bzgles6As0o/like",
+							"host": [
+								"{{BaseURL}}"
+							],
+							"path": [
+								"photos",
+								"bzgles6As0o",
+								"like"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Search",
+			"item": [
+				{
+					"name": "Search Photos",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Verifying Search Accuracy\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    var description = jsonData.results[0].description;\r",
+									"    pm.expect(description).to.include(\"Graduation\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Check if color is blue\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    var color = jsonData.results[0].color; \r",
+									"    pm.expect(color).to.equal(\"#d9f3f3\");\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "uQArIOsM5fwSIvTcjS2Afdr5UfiugwPF8WpzS0u2wfY",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BaseURL}}/search/photos?query=girl&color=blue&description=Graduation",
+							"host": [
+								"{{BaseURL}}"
+							],
+							"path": [
+								"search",
+								"photos"
+							],
+							"query": [
+								{
+									"key": "query",
+									"value": "girl"
+								},
+								{
+									"key": "color",
+									"value": "blue"
+								},
+								{
+									"key": "description",
+									"value": "Graduation"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Search collections",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Total collections returned is correct\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.total).to.be.above(0); \r",
+									"});\r",
+									"\r",
+									"\r",
+									"\r",
+									"pm.test(\"Verifying Search Accuracy\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    var found = jsonData.results.some(function(item) {\r",
+									"        return item.id === \"eggwsXawTCQ\" && item.title === \"3D - Sustainability Methaphors\";\r",
+									"    });\r",
+									"    pm.expect(found).to.be.true;\r",
+									"});\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "uQArIOsM5fwSIvTcjS2Afdr5UfiugwPF8WpzS0u2wfY",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BaseURL}}/search/collections?query=3D Sustainability Methaphors&title=3D - Sustainability Methaphors",
+							"host": [
+								"{{BaseURL}}"
+							],
+							"path": [
+								"search",
+								"collections"
+							],
+							"query": [
+								{
+									"key": "query",
+									"value": "3D Sustainability Methaphors"
+								},
+								{
+									"key": "title",
+									"value": "3D - Sustainability Methaphors"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Search Users",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Total collections returned is correct\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.total).to.be.above(0); \r",
+									"});\r",
+									"\r",
+									"\r",
+									"\r",
+									"pm.test(\"Verifying Search Accuracy\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    var found = jsonData.results.some(function(item) {\r",
+									"        return item.id === \"SR9m5sDN1lM\" && item.username === \"salwa1012\";\r",
+									"    });\r",
+									"    pm.expect(found).to.be.true;\r",
+									"});\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "uQArIOsM5fwSIvTcjS2Afdr5UfiugwPF8WpzS0u2wfY",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BaseURL}}/search/users?query=salwa1012",
+							"host": [
+								"{{BaseURL}}"
+							],
+							"path": [
+								"search",
+								"users"
+							],
+							"query": [
+								{
+									"key": "query",
+									"value": "salwa1012"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Collections",
+			"item": [
+				{
+					"name": "List collections",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"pm.test(\"Check response structure\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.be.an('array'); \r",
+									"    pm.expect(jsonData.length).to.be.at.least(1); \r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"Check for specific collection ID and title\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    var found = jsonData.some(function(item) {\r",
+									"        return item.id === \"dC7eiLvk_1s\" && item.title === \"Unsplash Designer Pack: Mockups\";\r",
+									"    });\r",
+									"    pm.expect(found).to.be.true; \r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "uQArIOsM5fwSIvTcjS2Afdr5UfiugwPF8WpzS0u2wfY",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BaseURL}}/collections",
+							"host": [
+								"{{BaseURL}}"
+							],
+							"path": [
+								"collections"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get single collection",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Check response has correct collection ID and title\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.id).to.eql(\"BODspzGghYY\");\r",
+									"    pm.expect(jsonData.title).to.eql(\"Unsplash+: 3D Colorful Monsters\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Check collection properties\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.description).to.be.null;\r",
+									"    pm.expect(jsonData.published_at).to.be.a('string');\r",
+									"    pm.expect(jsonData.last_collected_at).to.be.a('string');\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "uQArIOsM5fwSIvTcjS2Afdr5UfiugwPF8WpzS0u2wfY",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BaseURL}}/collections/BODspzGghYY",
+							"host": [
+								"{{BaseURL}}"
+							],
+							"path": [
+								"collections",
+								"BODspzGghYY"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get collection's photo",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Check response has correct photo ID and slug\", function () {\r",
+									"    var jsonData = pm.response.json()[0];\r",
+									"    pm.expect(jsonData.id).to.eql(\"x1r-KvORAMo\");\r",
+									"    pm.expect(jsonData.slug).to.eql(\"a-woman-with-a-bunch-of-balls-on-her-head-x1r-KvORAMo\");\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "uQArIOsM5fwSIvTcjS2Afdr5UfiugwPF8WpzS0u2wfY",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BaseURL}}/collections/ExSHnd2zmhk/photos",
+							"host": [
+								"{{BaseURL}}"
+							],
+							"path": [
+								"collections",
+								"ExSHnd2zmhk",
+								"photos"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "List collection's related collections",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "uQArIOsM5fwSIvTcjS2Afdr5UfiugwPF8WpzS0u2wfY",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BaseURL}}/collections/Bnp6lkLkhlM/related",
+							"host": [
+								"{{BaseURL}}"
+							],
+							"path": [
+								"collections",
+								"Bnp6lkLkhlM",
+								"related"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create collection",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 201\", function () {\r",
+									"    pm.response.to.have.status(201);\r",
+									"});\r",
+									"pm.test(\"Check collection is created\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.title).to.eql(\"ITI\");\r",
+									"});\r",
+									"var jsonData = pm.response.json();\r",
+									"\r",
+									"pm.collectionVariables.set(\"collectionId\", jsonData.id);\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "2VC5-ld2aOZBzVqS6Tz_Eo6JcM0xFyf6uGSpTJGFMJI",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{BaseURL}}/collections?title=ITI",
+							"host": [
+								"{{BaseURL}}"
+							],
+							"path": [
+								"collections"
+							],
+							"query": [
+								{
+									"key": "title",
+									"value": "ITI"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update collection",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Check description is updated\", function () {\r",
+									"    pm.expect(pm.response.text()).to.include(\"updated_at\");\r",
+									"});\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "2VC5-ld2aOZBzVqS6Tz_Eo6JcM0xFyf6uGSpTJGFMJI",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"description\":\"Updated ITI Collection\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BaseURL}}/collections/{{collectionId}}",
+							"host": [
+								"{{BaseURL}}"
+							],
+							"path": [
+								"collections",
+								"{{collectionId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete a collection",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 204\", function () {\r",
+									"    pm.response.to.have.status(204);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "2VC5-ld2aOZBzVqS6Tz_Eo6JcM0xFyf6uGSpTJGFMJI",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{BaseURL}}/collections/{{collectionId}}",
+							"host": [
+								"{{BaseURL}}"
+							],
+							"path": [
+								"collections",
+								"{{collectionId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add a photo to collection",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 201\", function () {\r",
+									"    pm.response.to.have.status(201);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Check photo ID and slug\", function () { \r",
+									"    var jsonData = pm.response.json();\r",
+									"    \r",
+									"    pm.expect(jsonData.photo).to.have.property('id');\r",
+									"    pm.expect(jsonData.photo).to.have.property('slug');\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "2VC5-ld2aOZBzVqS6Tz_Eo6JcM0xFyf6uGSpTJGFMJI",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{BaseURL}}/collections/ffFNKGaz6IY/add?photo_id=XmKxbgRc-bs",
+							"host": [
+								"{{BaseURL}}"
+							],
+							"path": [
+								"collections",
+								"ffFNKGaz6IY",
+								"add"
+							],
+							"query": [
+								{
+									"key": "photo_id",
+									"value": "XmKxbgRc-bs"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Remove photo from collection",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "2VC5-ld2aOZBzVqS6Tz_Eo6JcM0xFyf6uGSpTJGFMJI",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{BaseURL}}/collections/ffFNKGaz6IY/remove?photo_id=XmKxbgRc-bs",
+							"host": [
+								"{{BaseURL}}"
+							],
+							"path": [
+								"collections",
+								"ffFNKGaz6IY",
+								"remove"
+							],
+							"query": [
+								{
+									"key": "photo_id",
+									"value": "XmKxbgRc-bs"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Topics",
+			"item": [
+				{
+					"name": "List Topics",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"pm.test(\"Response contains required fields\", function () {\r",
+									"    var jsonData = pm.response.json()[0]; \r",
+									"    pm.expect(jsonData).to.have.property('id');\r",
+									"    pm.expect(jsonData).to.have.property('slug');\r",
+									"    pm.expect(jsonData).to.have.property('title');\r",
+									"    pm.expect(jsonData).to.have.property('description');\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "2VC5-ld2aOZBzVqS6Tz_Eo6JcM0xFyf6uGSpTJGFMJI",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BaseURL}}/topics",
+							"host": [
+								"{{BaseURL}}"
+							],
+							"path": [
+								"topics"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "List single topic",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"pm.test(\"Check the listed topic is correct\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.have.property('id', 'CDwuwXJAbEw');\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "2VC5-ld2aOZBzVqS6Tz_Eo6JcM0xFyf6uGSpTJGFMJI",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BaseURL}}/topics/CDwuwXJAbEw",
+							"host": [
+								"{{BaseURL}}"
+							],
+							"path": [
+								"topics",
+								"CDwuwXJAbEw"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get topic's photo",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Check photo's id\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    \r",
+									"\r",
+									"    pm.expect(jsonData[0]).to.have.property('id');\r",
+									" \r",
+									"});\r",
+									"\r",
+									"pm.test(\"Check if the response contains required fields\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData[0]).to.have.property('id');\r",
+									"    pm.expect(jsonData[0]).to.have.property('slug');\r",
+									"    pm.expect(jsonData[0].id).to.not.be.null;\r",
+									"    pm.expect(jsonData[0].slug).to.not.be.null;\r",
+									"\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "2VC5-ld2aOZBzVqS6Tz_Eo6JcM0xFyf6uGSpTJGFMJI",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BaseURL}}/topics/CDwuwXJAbEw/photos",
+							"host": [
+								"{{BaseURL}}"
+							],
+							"path": [
+								"topics",
+								"CDwuwXJAbEw",
+								"photos"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Stats",
+			"item": [
+				{
+					"name": "Totals",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Check response status\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Check total\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"\r",
+									"    pm.expect(jsonData).to.have.property('photos');\r",
+									"    pm.expect(jsonData).to.have.property('downloads');\r",
+									"\r",
+									"    pm.expect(jsonData.photos).to.be.above(0);\r",
+									"    pm.expect(jsonData.downloads).to.be.above(0);\r",
+									"\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "2VC5-ld2aOZBzVqS6Tz_Eo6JcM0xFyf6uGSpTJGFMJI",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BaseURL}}/stats/total",
+							"host": [
+								"{{BaseURL}}"
+							],
+							"path": [
+								"stats",
+								"total"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Month",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Check response status\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"\r",
+									"\r",
+									"pm.test(\"Check stats in response\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"\r",
+									"    pm.expect(jsonData).to.have.property('downloads');\r",
+									"    pm.expect(jsonData).to.have.property('views');\r",
+									"\r",
+									"    pm.expect(jsonData.downloads).to.be.above(0);\r",
+									"    pm.expect(jsonData.views).to.be.above(0);\r",
+									"\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "2VC5-ld2aOZBzVqS6Tz_Eo6JcM0xFyf6uGSpTJGFMJI",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BaseURL}}/stats/month",
+							"host": [
+								"{{BaseURL}}"
+							],
+							"path": [
+								"stats",
+								"month"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Authentication",
+			"item": [
+				{
+					"name": "GetAccessToken",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "client_id",
+									"value": "pwi7V4Tnh_G7drjat0Yu1dmVgclg6vAigJKRBiuEhrQ",
+									"type": "text"
+								},
+								{
+									"key": "client_secret",
+									"value": "YaCAI9kIBh1QjKSTDZDmcjwXIbBazF6cCIj4tK-L8Bo",
+									"type": "text"
+								},
+								{
+									"key": "redirect_uri",
+									"value": "urn:ietf:wg:oauth:2.0:oob",
+									"type": "text"
+								},
+								{
+									"key": "grant_type",
+									"value": "authorization_code",
+									"type": "text"
+								},
+								{
+									"key": "code",
+									"value": "4Agw4O5HpuF2FFrwvLUlGqRRT1U29avDFQFHRpqJ5R8",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "https://unsplash.com/oauth/token",
+							"protocol": "https",
+							"host": [
+								"unsplash",
+								"com"
+							],
+							"path": [
+								"oauth",
+								"token"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					"pm.test(\"Response time is less than 6000ms\", function () {\r",
+					"    pm.expect(pm.response.responseTime).to.be.below(6000);\r",
+					"});"
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "collectionId",
+			"value": ""
+		}
+	]
+}
